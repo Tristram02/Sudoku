@@ -11,12 +11,20 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SudokuBoardTest {
 
     @Test
-    public void testFillBoard() {
+    public void testGetandSet() {
+        int x = 2, y = 4, value = 5;
+        SudokuBoard testBoard = new SudokuBoard();
+        testBoard.set(x, y, value);
+        assertTrue(testBoard.get(2,4)==5);
+    }
+
+    @Test
+    public void testSolveGame() {
         SudokuBoard firstInstance = new SudokuBoard();
         SudokuBoard secondInstance = new SudokuBoard();
         
-        boolean firstResult = firstInstance.fillBoard(firstInstance.getBoard());
-        boolean secondResult = secondInstance.fillBoard(secondInstance.getBoard());
+        firstInstance.solveGame();
+        secondInstance.solveGame();
         
         assertFalse(firstInstance.getBoard() == secondInstance.getBoard());
         
@@ -25,7 +33,7 @@ public class SudokuBoardTest {
             for (int j = 0; j < 9; j++) {
                 for (int k = 0; k < 9; k++) {
                     if (j != k) {
-                        assertFalse(firstInstance.getBoard()[i][j] == firstInstance.getBoard()[i][k]);
+                        assertFalse(firstInstance.get(i,j) == firstInstance.get(i,k));
                     }
                 }
             }
@@ -35,7 +43,7 @@ public class SudokuBoardTest {
             for (int j = 0; j < 9; j++) {
                 for (int k = 0; k < 9; k++) {
                     if (j != k) {
-                        assertFalse(firstInstance.getBoard()[j][i] == firstInstance.getBoard()[k][i]);
+                        assertFalse(firstInstance.get(j,i) == firstInstance.get(k,i));
                     }
                 }
             }
@@ -48,7 +56,7 @@ public class SudokuBoardTest {
                 for (int x = 0; x < 3; x++) {
                     for (int y = 0; y < 3; y++) {
                         if (r+x != i && c+y != j) {
-                           assertFalse(firstInstance.getBoard()[r+x][c+y] == firstInstance.getBoard()[i][j]);    
+                           assertFalse(firstInstance.get(r+x,c+y) == firstInstance.get(i,j));
                         }
                     }
                 }

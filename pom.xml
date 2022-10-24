@@ -42,6 +42,26 @@
                     </reportSet>
                 </reportSets>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>3.1.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.15.0</version>
+<!--                <configuration>-->
+<!--                    <archive>-->
+<!--                        <manifest>-->
+<!--                            <mainClass>com.mycompany.firstproject.FirstProject</mainClass>-->
+<!--                            <mainClass>com.mycompany.firstproject.BacktrackingSudokuSolver</mainClass>-->
+<!--                            <mainClass>com.mycompany.firstproject.SudokuSolver</mainClass>-->
+<!--                            <mainClass>com.mycompany.firstproject.SudokuBoard</mainClass>-->
+<!--                        </manifest>-->
+<!--                    </archive>-->
+<!--                </configuration>-->
+            </plugin>
         </plugins>
     </reporting>
     
@@ -159,4 +179,17 @@
         <maven.compiler.target>17</maven.compiler.target>
         <exec.mainClass>com.mycompany.firstproject.FirstProject</exec.mainClass>
     </properties>
+    <developers>
+        <developer>
+            <id>242514</id>
+            <name>Kamil Ruszkiewicz</name>
+            <email>242514@edu.p.lodz.pl</email>
+        </developer>
+        <developer>
+            <id>242565</id>
+            <name>Kamil Włodarczyk</name>
+            <email>242565@edu.p.lodz.pl</email>
+        </developer>
+    </developers>
+    <description>Projekt grupy laboratoryjnej mb_cz_1800_05</description>
 </project>
