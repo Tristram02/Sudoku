@@ -24,19 +24,25 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         return true;
     }
 
-    public boolean correctNumber(int row, int col, int num, SudokuBoard board) {
+    public boolean correctRow(int row, int col, int num, SudokuBoard board) {
         for (int i = 0; i < 9; i++) {
             if (board.getBoard()[i][col] == num) {
                 return false;
             }
         }
+        return true;
+    }
 
+    public boolean correctColumn(int row, int col, int num, SudokuBoard board) {
         for (int i = 0; i < 9; i++) {
             if (board.getBoard()[row][i] == num) {
                 return false;
             }
         }
+        return true;
+    }
 
+    public boolean correctBox(int row, int col, int num, SudokuBoard board) {
         int firstRow = row - row % 3;
         int firstCol = col - col % 3;
 
@@ -47,7 +53,13 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
                 }
             }
         }
-
         return true;
+    }
+
+    public boolean correctNumber(int row, int col, int num, SudokuBoard board) {
+        if (correctRow(row, col, num, board) && correctColumn(row, col, num, board) && correctBox(row, col, num, board)) {
+            return true;
+        }
+        return false;
     }
 }

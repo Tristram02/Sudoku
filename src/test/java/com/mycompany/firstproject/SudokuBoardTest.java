@@ -5,64 +5,66 @@
 package com.mycompany.firstproject;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
 public class SudokuBoardTest {
 
+    SudokuBoard testBoard;
+    SudokuBoard testBoard_2;
+
+    @BeforeEach
+    void setUp() {
+        testBoard = new SudokuBoard();
+        testBoard_2 = new SudokuBoard();
+    }
+    @BeforeEach
+    void prepareTestBoard_2() {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                testBoard_2.set(i,j,1);
+            }
+        }
+    }
+
+
     @Test
-    public void testGetandSet() {
+    public void testSet() {
         int x = 2, y = 4, value = 5;
-        SudokuBoard testBoard = new SudokuBoard();
         testBoard.set(x, y, value);
         assertTrue(testBoard.get(2,4)==5);
     }
 
     @Test
+    public void testPrintBoard() {
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        String expectedOutput = "";
+
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                expectedOutput += testBoard_2.get(i,j);
+            }
+            expectedOutput += "\r\n";
+        }
+        testBoard_2.printBoard();
+        assertEquals(expectedOutput, outContent.toString());
+
+    }
+
+    @Test
     public void testSolveGame() {
-        SudokuBoard firstInstance = new SudokuBoard();
-        SudokuBoard secondInstance = new SudokuBoard();
-        
-        firstInstance.solveGame();
-        secondInstance.solveGame();
-        
-        assertFalse(firstInstance.getBoard() == secondInstance.getBoard());
-        
-        
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                for (int k = 0; k < 9; k++) {
-                    if (j != k) {
-                        assertFalse(firstInstance.get(i,j) == firstInstance.get(i,k));
-                    }
-                }
-            }
-        }
-        
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                for (int k = 0; k < 9; k++) {
-                    if (j != k) {
-                        assertFalse(firstInstance.get(j,i) == firstInstance.get(k,i));
-                    }
-                }
-            }
-        }
-        
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                int r = i - i % 3;
-                int c = j - j % 3;
-                for (int x = 0; x < 3; x++) {
-                    for (int y = 0; y < 3; y++) {
-                        if (r+x != i && c+y != j) {
-                           assertFalse(firstInstance.get(r+x,c+y) == firstInstance.get(i,j));
-                        }
-                    }
-                }
-            }
-        }
-        
+        testBoard.solveGame();
+        testBoard_2.solveGame();
+
+        assertFalse(testBoard.getBoard() == testBoard_2.getBoard());
+        assertNotEquals(testBoard.getBoard(), testBoard_2.getBoard());
     }
     
 }

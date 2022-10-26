@@ -7,6 +7,6 @@ package com.mycompany.firstproject;
 
 public class Greeter {
     public void greeter() {
-        System.out.print("Cooo");
+        System.out.print("Pozdrawiam");
     }
 }
