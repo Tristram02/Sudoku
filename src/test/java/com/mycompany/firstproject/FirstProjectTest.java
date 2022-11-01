@@ -16,7 +16,7 @@ public class FirstProjectTest {
         m = new FirstProject();
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
-        FirstProject.main();
+        FirstProject.main(null);
         assertNotEquals("", outContent.toString());
     }
 
