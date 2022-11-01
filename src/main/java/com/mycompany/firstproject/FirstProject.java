@@ -9,8 +9,10 @@ package com.mycompany.firstproject;
 public class FirstProject {
 
     public static void main(String[] args) {
-            SudokuBoard gra = new SudokuBoard();
+            SudokuSolver solver = new BacktrackingSudokuSolver();
+            SudokuBoard gra = new SudokuBoard(solver);
             gra.solveGame();
             gra.printBoard();
+            gra.getBox(1,7);
         }
     }

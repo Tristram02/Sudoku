@@ -14,6 +14,7 @@ public class FirstProjectTest {
     @Test
     public void testMain() {
         m = new FirstProject();
+
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
         FirstProject.main(null);

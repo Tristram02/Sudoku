@@ -17,11 +17,13 @@ public class SudokuBoardTest {
 
     SudokuBoard testBoard;
     SudokuBoard testBoard_2;
+    SudokuSolver solver;
 
     @BeforeEach
     void setUp() {
-        testBoard = new SudokuBoard();
-        testBoard_2 = new SudokuBoard();
+        solver = new BacktrackingSudokuSolver();
+        testBoard = new SudokuBoard(solver);
+        testBoard_2 = new SudokuBoard(solver);
     }
     @BeforeEach
     void prepareTestBoard_2() {

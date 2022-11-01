@@ -8,11 +8,13 @@ public class BacktrackingSudokuSolverTest {
 
     BacktrackingSudokuSolver b;
     SudokuBoard testBoard;
+    SudokuSolver solver;
     
     @BeforeEach
     void setUp() {
+        solver = new BacktrackingSudokuSolver();
         b = new BacktrackingSudokuSolver();
-        testBoard = new SudokuBoard();
+        testBoard = new SudokuBoard(solver);
     }
 
     @Test
