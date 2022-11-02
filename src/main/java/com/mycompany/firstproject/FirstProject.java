@@ -13,6 +13,6 @@ public class FirstProject {
             SudokuBoard gra = new SudokuBoard(solver);
             gra.solveGame();
             gra.printBoard();
-            gra.getBox(1,7);
         }
     }
+
