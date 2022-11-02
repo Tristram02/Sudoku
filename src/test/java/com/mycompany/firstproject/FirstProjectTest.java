@@ -19,6 +19,7 @@ public class FirstProjectTest {
         System.setOut(new PrintStream(outContent));
         FirstProject.main(null);
         assertNotEquals("", outContent.toString());
+
     }
 
 }

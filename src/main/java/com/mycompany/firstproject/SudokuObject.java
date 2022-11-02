@@ -24,12 +24,9 @@ public class SudokuObject {
     public boolean verify() {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                if (i != j) {
-                    if (field[i] == field[j]) {
+                    if (field[i].getFieldValue() == field[j].getFieldValue() && i != j) {
                         return false;
                     }
-                }
-
             }
         }
         return true;

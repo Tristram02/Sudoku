@@ -29,7 +29,7 @@ public class SudokuBoard {
 
     public boolean checkBoard() {
         for (int i = 0; i < 9; i++) {
-            if (!(getRow(i).verify() && getColumn(i).verify())) {
+            if (!getRow(i).verify() || !getColumn(i).verify()) {
                 return false;
             }
         }

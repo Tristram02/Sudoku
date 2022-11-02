@@ -17,6 +17,9 @@ public class SudokuBoardTest {
 
     SudokuBoard testBoard;
     SudokuBoard testBoard_2;
+    SudokuBoard testBoard_3;
+    SudokuBoard testBoard_4;
+    SudokuBoard testBoard_5;
     SudokuSolver solver;
 
     @BeforeEach
@@ -24,6 +27,9 @@ public class SudokuBoardTest {
         solver = new BacktrackingSudokuSolver();
         testBoard = new SudokuBoard(solver);
         testBoard_2 = new SudokuBoard(solver);
+        testBoard_3 = new SudokuBoard(solver);
+        testBoard_4 = new SudokuBoard(solver);
+        testBoard_5 = new SudokuBoard(solver);
     }
     @BeforeEach
     void prepareTestBoard_2() {
@@ -33,6 +39,9 @@ public class SudokuBoardTest {
             }
         }
     }
+
+
+
 
 
     @Test
@@ -68,5 +77,19 @@ public class SudokuBoardTest {
         assertFalse(testBoard.getBoard() == testBoard_2.getBoard());
         assertNotEquals(testBoard.getBoard(), testBoard_2.getBoard());
     }
-    
+
+    @Test
+    public void testCheckBoard() {
+        testBoard_3.solveGame();
+        testBoard_4.solveGame();
+        testBoard_4.set(0,1,4);
+        testBoard_4.set(0,2,4);
+        testBoard_5.solveGame();
+        testBoard_5.set(0,1,4);
+        testBoard_5.set(1,0,4);
+        assertTrue(testBoard_3.checkBoard());
+        assertFalse(testBoard_4.checkBoard());
+        assertFalse(testBoard_5.checkBoard());
+    }
+
 }
