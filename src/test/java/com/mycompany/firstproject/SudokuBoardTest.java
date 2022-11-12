@@ -17,9 +17,10 @@ public class SudokuBoardTest {
 
     SudokuBoard testBoard;
     SudokuBoard testBoard_2;
-    SudokuBoard testBoard_3;
-    SudokuBoard testBoard_4;
-    SudokuBoard testBoard_5;
+    SudokuBoard testBoard_good;
+    SudokuBoard testBoard_row;
+    SudokuBoard testBoard_box;
+    SudokuBoard testBoard_col;
     SudokuSolver solver;
 
     @BeforeEach
@@ -27,9 +28,10 @@ public class SudokuBoardTest {
         solver = new BacktrackingSudokuSolver();
         testBoard = new SudokuBoard(solver);
         testBoard_2 = new SudokuBoard(solver);
-        testBoard_3 = new SudokuBoard(solver);
-        testBoard_4 = new SudokuBoard(solver);
-        testBoard_5 = new SudokuBoard(solver);
+        testBoard_good = new SudokuBoard(solver);
+        testBoard_row = new SudokuBoard(solver);
+        testBoard_box = new SudokuBoard(solver);
+        testBoard_col = new SudokuBoard(solver);
     }
     @BeforeEach
     void prepareTestBoard_2() {
@@ -80,16 +82,23 @@ public class SudokuBoardTest {
 
     @Test
     public void testCheckBoard() {
-        testBoard_3.solveGame();
-        testBoard_4.solveGame();
-        testBoard_4.set(0,1,4);
-        testBoard_4.set(0,2,4);
-        testBoard_5.solveGame();
-        testBoard_5.set(0,1,4);
-        testBoard_5.set(1,0,4);
-        assertTrue(testBoard_3.checkBoard());
-        assertFalse(testBoard_4.checkBoard());
-        assertFalse(testBoard_5.checkBoard());
+        testBoard_good.solveGame();
+        testBoard_row.solveGame();
+        testBoard_box.solveGame();
+        testBoard_col.solveGame();
+        testBoard_row.set(0,1,4);
+        testBoard_row.set(0,2,4);
+        testBoard_col.set(1,0,4);
+        testBoard_col.set(2,0,4);
+        for(int i=0;i<9;i++)
+        {
+            int x = testBoard_box.get(2,i);
+            testBoard_box.set(2,i, testBoard_box.get(3,i) );
+            testBoard_box.set(3,i,x);
+        }
+        assertTrue(testBoard_good.checkBoard());
+        assertFalse(testBoard_row.checkBoard());
+        assertFalse(testBoard_col.checkBoard());
+        assertFalse(testBoard_box.checkBoard());
     }
-
 }
