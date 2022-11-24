@@ -37,6 +37,8 @@ public class SudokuBoardTest {
 
     SudokuBoard testBoard;
     SudokuBoard testBoard_2;
+    SudokuBoard testBoard_3;
+    SudokuBoard testBoard_4;
     SudokuBoard testBoard_good;
     SudokuBoard testBoard_row;
     SudokuBoard testBoard_box;
@@ -48,6 +50,8 @@ public class SudokuBoardTest {
         solver = new BacktrackingSudokuSolver();
         testBoard = new SudokuBoard(solver);
         testBoard_2 = new SudokuBoard(solver);
+        testBoard_3 = new SudokuBoard(solver);
+        testBoard_4 = new SudokuBoard(solver);
         testBoard_good = new SudokuBoard(solver);
         testBoard_row = new SudokuBoard(solver);
         testBoard_box = new SudokuBoard(solver);
@@ -120,5 +124,20 @@ public class SudokuBoardTest {
         assertFalse(testBoard_row.checkBoard());
         assertFalse(testBoard_col.checkBoard());
         assertFalse(testBoard_box.checkBoard());
+    }
+
+    @Test
+    public void toStringTest() {
+        assertNotNull(testBoard_3.toString());
+    }
+
+    @Test
+    public void equalsTest() {
+        assertTrue(testBoard_3.equals(testBoard_4) && testBoard_4.equals(testBoard_3));
+    }
+
+    @Test
+    public void hashCodeTest() {
+        assertEquals(testBoard_3.hashCode(), testBoard_4.hashCode());
     }
 }

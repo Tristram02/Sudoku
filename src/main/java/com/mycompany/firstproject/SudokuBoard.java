@@ -20,10 +20,11 @@ package com.mycompany.firstproject;
  * #L%
  */
 
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class SudokuBoard {
     private final List<List<SudokuField>> board;
@@ -123,5 +124,20 @@ public class SudokuBoard {
             }
             System.out.println();
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return new EqualsBuilder().append(board, ((SudokuBoard) obj).board).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17,31).append(board).toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("board", board).toString();
     }
 }

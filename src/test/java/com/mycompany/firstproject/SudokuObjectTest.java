@@ -31,12 +31,16 @@ public class SudokuObjectTest {
 
     SudokuObject object;
     SudokuObject object_2;
+    SudokuObject object_3;
+    SudokuObject object_4;
     List<SudokuField> field;
     List<SudokuField> field_2;
     @BeforeEach
     void setUp() {
         object = new SudokuObject();
         object_2 = new SudokuObject();
+        object_3 = new SudokuObject();
+        object_4 = new SudokuObject();
         field = Arrays.asList(new SudokuField[9]);
         field_2 = Arrays.asList(new SudokuField[9]);
 
@@ -65,8 +69,25 @@ public class SudokuObjectTest {
         object.printValuesOfObject();
         assertEquals(expectedOutput, outContent.toString());
     }
+
+    @Test
     public void testVerify() {
         assertTrue(object.verify());
         assertFalse(object_2.verify());
+    }
+
+    @Test
+    public void toStringTest() {
+        assertNotNull(object_3.toString());
+    }
+
+    @Test
+    public void equalsTest() {
+        assertTrue(object_3.equals(object_4) && object_4.equals(object_3));
+    }
+
+    @Test
+    public void hashCodeTest() {
+        assertEquals(object_3.hashCode(), object_4.hashCode());
     }
 }

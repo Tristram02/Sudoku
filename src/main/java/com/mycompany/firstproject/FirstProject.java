@@ -25,9 +25,6 @@ package com.mycompany.firstproject;
  * #L%
  */
 
-
-import java.util.Random;
-
 public class FirstProject {
 
     public static void main(String[] args) {

@@ -20,9 +20,12 @@ package com.mycompany.firstproject;
  * #L%
  */
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 
 public class SudokuObject {
     private final List<SudokuField> field = Arrays.asList(new SudokuField[9]);
@@ -48,14 +51,27 @@ public class SudokuObject {
     public boolean verify() {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                if (i != j) {
-                    if (field.get(i).getFieldValue() == field.get(j).getFieldValue()) {
-                        return false;
-                    }
+                if (i != j && field.get(i).getFieldValue() == field.get(j).getFieldValue()) {
+                    return false;
                 }
 
             }
         }
         return true;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return new EqualsBuilder().append(field, ((SudokuObject) obj).field).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17,37).append(field).toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("field", field).toString();
     }
 }
