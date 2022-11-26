@@ -20,6 +20,18 @@ package com.mycompany.firstproject;
  * #L%
  */
 
-public class SudokuBox extends SudokuObject {
+import java.util.ArrayList;
+import java.util.List;
 
+public class SudokuColumn extends SudokuObject {
+
+    public SudokuColumn(List<SudokuField> field) {
+        super(field);
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        List<SudokuField> field = new ArrayList<>(getField());
+        return new SudokuColumn(field);
+    }
 }

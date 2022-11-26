@@ -37,12 +37,12 @@ public class SudokuObjectTest {
     List<SudokuField> field_2;
     @BeforeEach
     void setUp() {
-        object = new SudokuObject();
-        object_2 = new SudokuObject();
-        object_3 = new SudokuObject();
-        object_4 = new SudokuObject();
         field = Arrays.asList(new SudokuField[9]);
         field_2 = Arrays.asList(new SudokuField[9]);
+        object = new SudokuObject(field);
+        object_2 = new SudokuObject(field);
+        object_3 = new SudokuObject(field);
+        object_4 = new SudokuObject(field);
 
         for(int i=0;i<9;i++)
         {

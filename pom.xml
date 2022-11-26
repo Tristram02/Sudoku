@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.mycompany</groupId>
-    <artifactId>FirstProject</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <groupId>Sudoku</groupId>
+    <artifactId>SudokuGameProject</artifactId>
+    <version>2.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+	
+	<modules>
+        <module>Model</module>
+        <module>View</module>
+    </modules>
 
     <licenses>
         <license>
@@ -66,16 +71,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>3.15.0</version>
-<!--                <configuration>-->
-<!--                    <archive>-->
-<!--                        <manifest>-->
-<!--                            <mainClass>com.mycompany.firstproject.FirstProject</mainClass>-->
-<!--                            <mainClass>com.mycompany.firstproject.BacktrackingSudokuSolver</mainClass>-->
-<!--                            <mainClass>com.mycompany.firstproject.SudokuSolver</mainClass>-->
-<!--                            <mainClass>com.mycompany.firstproject.SudokuBoard</mainClass>-->
-<!--                        </manifest>-->
-<!--                    </archive>-->
-<!--                </configuration>-->
             </plugin>
         </plugins>
     </reporting>

@@ -20,21 +20,16 @@ package com.mycompany.firstproject;
  * #L%
  */
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class SudokuBoard {
+public class SudokuBoard implements Serializable, Cloneable {
     private final List<List<SudokuField>> board;
     private final SudokuSolver sudokuSolver;
-
-    private final SudokuRow row = new SudokuRow();
-
-    private final SudokuColumn column = new SudokuColumn();
-
-    private final SudokuBox box = new SudokuBox();
 
     public SudokuBoard(SudokuSolver solver) {
         board = Arrays.asList(new List[9]);
@@ -80,8 +75,7 @@ public class SudokuBoard {
         for (int i = 0; i < 9; i++) {
             values.set(i, board.get(y).get(i));
         }
-        row.setValuesOfObject(values);
-        return row;
+        return new SudokuRow(values);
     }
 
     public SudokuColumn getColumn(int x) {
@@ -89,8 +83,8 @@ public class SudokuBoard {
         for (int i = 0; i < 9; i++) {
             values.set(i, board.get(i).get(x));
         }
-        column.setValuesOfObject(values);
-        return column;
+
+        return new SudokuColumn(values);
     }
 
     public SudokuBox getBox(int x, int y) {
@@ -104,9 +98,8 @@ public class SudokuBoard {
                 k++;
             }
         }
-        box.setValuesOfObject(values);
 
-        return box;
+        return new SudokuBox(values);
     }
 
     public void set(int x, int y, int value) {
@@ -139,5 +132,16 @@ public class SudokuBoard {
     @Override
     public String toString() {
         return new ToStringBuilder(this).append("board", board).toString();
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        SudokuBoard _board = new SudokuBoard(this.sudokuSolver);
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                _board.set(i, j, get(i, j));
+            }
+        }
+        return _board;
     }
 }

@@ -20,6 +20,7 @@ package com.mycompany.firstproject;
  * #L%
  */
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -27,13 +28,17 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
-public class SudokuObject {
+public class SudokuObject implements Cloneable, Serializable {
     private final List<SudokuField> field = Arrays.asList(new SudokuField[9]);
 
-    public SudokuObject() {
+    public SudokuObject(List<SudokuField> field) {
         for (int i = 0; i < 9; i++) {
             field.set(i, new SudokuField());
         }
+    }
+
+    public List<SudokuField> getField() {
+        return field;
     }
 
     public void setValuesOfObject(List<SudokuField> values) {
