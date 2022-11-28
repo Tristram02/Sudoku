@@ -16,17 +16,35 @@ class SudokuFieldTest {
     }
 
     @Test
-    void testHashCode() {
+    public void testHashCode() {
         assertEquals(field.hashCode(), field_2.hashCode());
     }
 
     @Test
-    void testEquals() {
+    public void testEquals() {
         assertTrue(field.equals(field_2) && field_2.equals(field));
     }
 
     @Test
-    void testToString() {
+    public void testToString() {
         assertNotNull(field.toString());
+    }
+
+    @Test
+    public void compareToTest() {
+        field.setFieldValue(5);
+        field_2.setFieldValue(10);
+        assertTrue(field.compareTo(field_2) < 0);
+        field_2.setFieldValue(2);
+        assertTrue(field.compareTo(field_2) > 0);
+        field_2.setFieldValue(5);
+        assertEquals(field.compareTo(field_2), 0);
+    }
+
+    @Test
+    public void cloneTest() throws CloneNotSupportedException {
+        field.setFieldValue(5);
+        field_2 = (SudokuField) field.clone();
+        assertTrue(field.equals(field_2) && field_2.equals(field));
     }
 }

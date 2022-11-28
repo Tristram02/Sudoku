@@ -140,4 +140,11 @@ public class SudokuBoardTest {
     public void hashCodeTest() {
         assertEquals(testBoard_3.hashCode(), testBoard_4.hashCode());
     }
+
+    @Test
+    public void cloneTest() throws CloneNotSupportedException {
+        solver.solve(testBoard_3);
+        testBoard_4 = (SudokuBoard) testBoard_3.clone();
+        assertTrue(testBoard_3.equals(testBoard_4) && testBoard_4.equals(testBoard_3));
+    }
 }

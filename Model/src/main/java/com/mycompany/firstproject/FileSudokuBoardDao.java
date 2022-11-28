@@ -1,9 +1,13 @@
 package com.mycompany.firstproject;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class FileSudokuBoardDao implements Dao<SudokuBoard> {
-    private String fileName;
+    private final String fileName;
 
     public FileSudokuBoardDao(String fileName) {
         this.fileName = fileName + ".txt";
@@ -14,7 +18,7 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
         SudokuBoard obj = null;
 
         try (FileInputStream fis = new FileInputStream(fileName);
-            ObjectInputStream ois = new ObjectInputStream(fis)) {
+             ObjectInputStream ois = new ObjectInputStream(fis)) {
             obj = (SudokuBoard) ois.readObject();
         } catch (ClassNotFoundException | IOException e) {
             throw new RuntimeException(e);

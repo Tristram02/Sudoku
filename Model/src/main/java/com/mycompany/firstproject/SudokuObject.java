@@ -21,7 +21,6 @@ package com.mycompany.firstproject;
  */
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -29,12 +28,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
 public class SudokuObject implements Cloneable, Serializable {
-    private final List<SudokuField> field = Arrays.asList(new SudokuField[9]);
+    private final List<SudokuField> field;
 
     public SudokuObject(List<SudokuField> field) {
-        for (int i = 0; i < 9; i++) {
-            field.set(i, new SudokuField());
+        if (field.size() != 9) {
+            throw new RuntimeException("Wrong object size!");
         }
+        this.field = field;
     }
 
     public List<SudokuField> getField() {

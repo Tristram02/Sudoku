@@ -8,7 +8,7 @@
 	
 	<modules>
         <module>Model</module>
-        <module>View</module>
+<!--        <module>View</module>-->
     </modules>
 
     <licenses>

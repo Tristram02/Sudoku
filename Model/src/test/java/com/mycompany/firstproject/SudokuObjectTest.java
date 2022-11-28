@@ -35,14 +35,20 @@ public class SudokuObjectTest {
     SudokuObject object_4;
     List<SudokuField> field;
     List<SudokuField> field_2;
+    List<SudokuField> field_3;
     @BeforeEach
     void setUp() {
         field = Arrays.asList(new SudokuField[9]);
         field_2 = Arrays.asList(new SudokuField[9]);
+        field_3 = Arrays.asList(new SudokuField[8]);
         object = new SudokuObject(field);
-        object_2 = new SudokuObject(field);
+        object_2 = new SudokuObject(field_2);
         object_3 = new SudokuObject(field);
         object_4 = new SudokuObject(field);
+
+        for(int i = 0; i < 8; i++) {
+            field_3.set(i, new SudokuField());
+        }
 
         for(int i=0;i<9;i++)
         {
@@ -56,6 +62,15 @@ public class SudokuObjectTest {
         object_2.setValuesOfObject(field_2);
     }
 
+    @Test
+    public void SudokuObjectWrongSizeTest() {
+        Throwable exception = assertThrows(RuntimeException.class, () -> new SudokuObject(field_3));
+        assertEquals("Wrong object size!", exception.getMessage());
+    }
+    @Test
+    public void testGetField() {
+        assertEquals(object.getField(),field);
+    }
     @Test
     public void testPrintValuesOfObject() {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
