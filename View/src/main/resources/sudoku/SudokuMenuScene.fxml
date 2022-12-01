@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="516.0" prefWidth="810.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sudoku.MenuControls">
+   <top>
+      <Label text="WITAJ W GRZE!" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="Berlin Sans FB" size="33.0" />
+         </font>
+         <BorderPane.margin>
+            <Insets top="10.0" />
+         </BorderPane.margin>
+      </Label>
+   </top>
+   <left>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" prefHeight="55.0" prefWidth="100.0" text="WYBIERZ POZIOM TRUDNOŚCI" textAlignment="CENTER" wrapText="true" />
+            <RadioButton mnemonicParsing="false" selected="true" text="LEVEL 1">
+               <VBox.margin>
+                  <Insets top="40.0" />
+               </VBox.margin>
+               <toggleGroup>
+                  <ToggleGroup fx:id="levelGroup" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton mnemonicParsing="false" text="LEVEL 2" toggleGroup="$levelGroup">
+               <VBox.margin>
+                  <Insets top="40.0" />
+               </VBox.margin>
+            </RadioButton>
+            <RadioButton mnemonicParsing="false" text="LEVEL 3" toggleGroup="$levelGroup">
+               <VBox.margin>
+                  <Insets top="40.0" />
+               </VBox.margin>
+            </RadioButton>
+            <RadioButton mnemonicParsing="false" text="LEVEL 4" toggleGroup="$levelGroup">
+               <VBox.margin>
+                  <Insets top="40.0" />
+               </VBox.margin>
+            </RadioButton>
+         </children>
+         <BorderPane.margin>
+            <Insets left="20.0" />
+         </BorderPane.margin>
+      </VBox>
+   </left>
+   <bottom>
+      <Button id="start" fx:id="start" mnemonicParsing="false" onAction="#onStartClick" text="ROZPOCZNIJ" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="30.0" />
+         </BorderPane.margin>
+         <font>
+            <Font size="40.0" />
+         </font>
+      </Button>
+   </bottom>
+   <center>
+      <Label alignment="TOP_CENTER" prefHeight="303.0" prefWidth="431.0" text="Dobierz poziom trudności do swoich umiejętności&#10;Im większy poziom, tym więcej wysiłku w rozwiązanie trzeba włożyć&#10;Następnie naciśnij przycisk, aby rozpocząć grę" textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets right="100.0" />
+         </BorderPane.margin>
+      </Label>
+   </center>
+</BorderPane>
