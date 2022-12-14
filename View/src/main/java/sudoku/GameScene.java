@@ -4,10 +4,6 @@ package sudoku;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
-
-import java.io.IOException;
-
-
 public class GameScene {
 
     private GridPane sudokuGrid;
@@ -16,7 +12,7 @@ public class GameScene {
 
     private final BacktrackingSudokuSolver solver = new BacktrackingSudokuSolver();
     private SudokuBoard board = new SudokuBoard(solver);
-    private SudokuBoard copy_board = new SudokuBoard(solver);
+    private SudokuBoard copyBoard = new SudokuBoard(solver);
 
     public void setLevelValue(int levelValue) {
         this.levelValue = levelValue;
@@ -29,11 +25,10 @@ public class GameScene {
 
     public void initialize() throws CloneNotSupportedException {
         solver.solve(board);
-        copy_board = (SudokuBoard) board.clone();
+        copyBoard = (SudokuBoard) board.clone();
         board = lvl.chooseDifficulty(board, this.levelValue);
         setSudokuGrid();
         fillGrid();
-
     }
 
 
@@ -42,7 +37,7 @@ public class GameScene {
             for (int j = 0; j < 9; j++) {
                 TextField textField = new TextField();
                 textField.setText(String.valueOf(board.get(i, j)));
-                if(board.get(i, j) != 0) {
+                if (board.get(i, j) != 0) {
                     textField.setDisable(true);
                 }
                 sudokuGrid.add(textField, i, j);

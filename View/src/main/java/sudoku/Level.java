@@ -2,10 +2,10 @@ package sudoku;
 
 
 
-import javafx.util.Pair;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import javafx.util.Pair;
 
 public class Level {
 
@@ -27,13 +27,13 @@ public class Level {
 
 
     private SudokuBoard drawRandomIndexes(SudokuBoard board, int numberOfIndexes) {
-        while(hiddenFields.size() < numberOfIndexes) {
+        while (hiddenFields.size() < numberOfIndexes) {
             int x = rand.nextInt(9);
             int y = rand.nextInt(9);
             hiddenFields.add(new Pair<>(x,y));
         }
 
-        for(Pair<Integer, Integer> x : hiddenFields) {
+        for (Pair<Integer, Integer> x : hiddenFields) {
             board.set(x.getKey(), x.getValue(), 0);
         }
         return board;

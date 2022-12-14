@@ -42,6 +42,14 @@ class SudokuFieldTest {
     }
 
     @Test
+    public void compareToExceptionTest() {
+        Throwable exception = assertThrows(NullPointerException.class, () -> {
+            int test = field.compareTo(null);
+        });
+        assertEquals("Wrong object!", exception.getMessage());
+    }
+
+    @Test
     public void cloneTest() throws CloneNotSupportedException {
         field.setFieldValue(5);
         field_2 = (SudokuField) field.clone();

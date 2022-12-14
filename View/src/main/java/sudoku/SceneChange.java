@@ -2,6 +2,8 @@ package sudoku;
 
 
 import java.io.IOException;
+import java.util.ResourceBundle;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -20,18 +22,18 @@ public class SceneChange {
         SceneChange.scene = scene;
     }
 
-    public static Parent loadScene(String file) throws IOException {
-        return new FXMLLoader(SceneChange.class.getResource(file)).load();
+    public static Parent loadScene(String file, ResourceBundle bundle) throws IOException {
+        return new FXMLLoader(SceneChange.class.getResource(file), bundle).load();
     }
 
-    public static void buildScene(Stage scene, String file) throws IOException {
+    public static void buildScene(Stage scene, String file, ResourceBundle bundle) throws IOException {
         setScene(scene);
-        scene.setScene(new Scene(loadScene(file)));
+        scene.setScene(new Scene(loadScene(file, bundle)));
         scene.show();
     }
 
-    public static void buildScene(String file) throws IOException {
-        scene.setScene(new Scene(loadScene(file)));
+    public static void buildScene(String file, ResourceBundle bundle) throws IOException {
+        scene.setScene(new Scene(loadScene(file, bundle)));
         scene.show();
     }
 }
