@@ -56,7 +56,7 @@ public class SudokuObject implements Cloneable, Serializable {
     public boolean verify() {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                if (i != j && field.get(i).getFieldValue() == field.get(j).getFieldValue()) {
+                if ((i != j && field.get(i).getFieldValue() == field.get(j).getFieldValue()) || field.get(j).getFieldValue() == 0) {
                     return false;
                 }
 

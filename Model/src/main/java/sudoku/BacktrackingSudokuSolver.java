@@ -20,15 +20,16 @@ package sudoku;
  * #L%
  */
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class BacktrackingSudokuSolver implements SudokuSolver {
+public class BacktrackingSudokuSolver implements SudokuSolver, Serializable {
     public boolean solve(SudokuBoard board) {
         Random rand = new Random();
         for (int r = 0; r < 9; r++) {
             for (int c = 0; c < 9; c++) {
                 if (board.getBoard().get(r).get(c).getFieldValue() == 0) {
-                    for (int i = 1; i < 10; i++) {
+                    for (int i = 1; i < 15; i++) {
                         int num = rand.nextInt(10 - 1) + 1;
                         if (correctNumber(r,c,num, board)) {
                             board.getBoard().get(r).get(c).setFieldValue(num);

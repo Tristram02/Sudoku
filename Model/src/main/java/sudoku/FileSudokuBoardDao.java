@@ -10,7 +10,7 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
     private final String fileName;
 
     public FileSudokuBoardDao(String fileName) {
-        this.fileName = fileName + ".txt";
+        this.fileName = fileName;
     }
 
     @Override
