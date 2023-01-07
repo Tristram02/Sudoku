@@ -21,20 +21,27 @@ package sudoku;
  */
 
 import java.io.Serializable;
+import java.util.ResourceBundle;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import sudoku.exceptions.WrongValueException;
 
 public class SudokuField implements Serializable, Cloneable, Comparable<SudokuField> {
 
     private int value;
+    private final transient ResourceBundle bundle = ResourceBundle.getBundle("Language");
 
     public int getFieldValue() {
         return value;
     }
 
     public void setFieldValue(int newValue) {
-        value = newValue;
+
+        if (newValue < 0 || newValue > 9) {
+            throw new WrongValueException(bundle.getString("_badValue"));
+        }
+        this.value = newValue;
     }
 
     @Override

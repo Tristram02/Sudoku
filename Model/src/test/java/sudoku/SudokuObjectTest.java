@@ -58,6 +58,7 @@ public class SudokuObjectTest {
             field_2.get(i).setFieldValue(i+1);
         }
         field_2.get(4).setFieldValue(8);
+        field_2.get(3).setFieldValue(0);
         object.setValuesOfObject(field);
         object_2.setValuesOfObject(field_2);
     }

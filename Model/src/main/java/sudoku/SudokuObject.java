@@ -25,6 +25,7 @@ import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import sudoku.exceptions.WrongObjectSizeException;
 
 
 public class SudokuObject implements Cloneable, Serializable {
@@ -32,7 +33,7 @@ public class SudokuObject implements Cloneable, Serializable {
 
     public SudokuObject(List<SudokuField> field) {
         if (field.size() != 9) {
-            throw new RuntimeException("Wrong object size!");
+            throw new WrongObjectSizeException("Wrong object size!");
         }
         this.field = field;
     }
@@ -56,7 +57,7 @@ public class SudokuObject implements Cloneable, Serializable {
     public boolean verify() {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                if ((i != j && field.get(i).getFieldValue() == field.get(j).getFieldValue()) || field.get(j).getFieldValue() == 0) {
+                if (i != j && field.get(i).getFieldValue() == field.get(j).getFieldValue() || field.get(j).getFieldValue() == 0) {
                     return false;
                 }
 

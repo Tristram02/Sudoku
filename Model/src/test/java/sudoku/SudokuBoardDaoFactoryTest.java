@@ -12,4 +12,9 @@ class SudokuBoardDaoFactoryTest {
     void getFileDaoTest() {
         assertNotNull(factory.getFileDao("file"));
     }
+
+    @Test
+    void getDatabaseDaoTest() {
+        assertNotNull(factory.getFileDao("base"));
+    }
 }

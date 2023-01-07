@@ -1,7 +1,9 @@
 package sudoku;
 
-public interface Dao<T> {
-    T read();
+import sudoku.exceptions.DaoException;
 
-    void write(T obj);
+public interface Dao<T> {
+    T read() throws DaoException;
+
+    void write(T obj) throws DaoException;
 }

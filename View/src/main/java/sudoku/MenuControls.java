@@ -3,14 +3,17 @@ package sudoku;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.stage.FileChooser;
-import org.apache.commons.lang3.ObjectUtils;
-import org.jetbrains.annotations.NotNull;
+import sudoku.exceptions.DaoException;
+
 
 public class MenuControls {
 
@@ -26,9 +29,11 @@ public class MenuControls {
     private static SudokuBoard fileBoard;
     private FileChooser fileChooser;
     private Dao<SudokuBoard> fileDao;
+    private Dao<SudokuBoard> jdbcFileDao;
     private final SudokuBoardDaoFactory factory = new SudokuBoardDaoFactory();
+    private static final Logger logger = Logger.getLogger(MenuControls.class.getName());
 
-    private ResourceBundle bundle = ResourceBundle.getBundle("sudoku/Language");
+    private ResourceBundle bundle = ResourceBundle.getBundle("Language");
 
     @FXML
     private final GameScene gs = new GameScene();
@@ -39,7 +44,7 @@ public class MenuControls {
                 bundle.getString("_polish"),
                 bundle.getString("_english")
         );
-        bundle = ResourceBundle.getBundle("sudoku/Language");
+        bundle = ResourceBundle.getBundle("Language");
     }
 
     @FXML
@@ -54,9 +59,10 @@ public class MenuControls {
             }
 
             initialize();
-            SceneChange.buildScene("SudokuMenuScene.fxml", bundle);
+            SceneChange.buildScene("/SudokuMenuScene.fxml", bundle);
+            logger.info("Language has changed");
         } catch (NullPointerException e) {
-
+            logger.warning("Language was not selected");
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setContentText(bundle.getString("_error"));
             alert.showAndWait();
@@ -107,10 +113,11 @@ public class MenuControls {
     }
 
     @FXML
-    public void onStartClick(ActionEvent actionEvent) throws IOException, CloneNotSupportedException {
+    public void onStartClick(ActionEvent actionEvent) throws IOException {
         setCurrentLevel();
         GameScene.setFromFile(fileBoard != null);
-        SceneChange.buildScene("SudokuGameScene.fxml", bundle);
+        SceneChange.buildScene("/SudokuGameScene.fxml", bundle);
+        logger.info("Game started");
     }
 
     @FXML
@@ -120,6 +127,7 @@ public class MenuControls {
         alert.setTitle(bundle.getString("_authors"));
         alert.setContentText(authors.getObject("1") + "\n" + authors.getObject("2"));
         alert.showAndWait();
+        logger.info("Authors was shown");
     }
 
     @FXML
@@ -132,16 +140,38 @@ public class MenuControls {
             file = fileChooser.showOpenDialog(SceneChange.getScene()).getName();
             fileDao = factory.getFileDao(file);
             fileBoard = fileDao.read();
-            levelGroup.getToggles().forEach( toggle -> {
+            levelGroup.getToggles().forEach(toggle -> {
                 Node btn = (Node) toggle;
                 btn.setDisable(true);
             });
 
-        } catch (NullPointerException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        } catch (NullPointerException | DaoException e) {
+            logger.warning("Can not read a file");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setContentText(bundle.getString("_error"));
             alert.showAndWait();
         }
     }
 
+    @FXML
+    public void onDatabaseUpload(ActionEvent actionEvent) {
+        String file;
+        fileChooser = new FileChooser();
+
+        try {
+            file = fileChooser.showOpenDialog(SceneChange.getScene()).getName();
+            jdbcFileDao = factory.getDatabaseDao(file);
+            fileBoard = jdbcFileDao.read();
+            levelGroup.getToggles().forEach(toggle -> {
+                Node btn = (Node) toggle;
+                btn.setDisable(true);
+            });
+        } catch (NullPointerException | DaoException e) {
+            logger.warning("Can not read board from database!");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText(bundle.getString("_error"));
+            alert.showAndWait();
+        }
+    }
 }
+

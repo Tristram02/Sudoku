@@ -70,6 +70,10 @@ public class SudokuBoard implements Serializable, Cloneable {
         return board.get(x).get(y).getFieldValue();
     }
 
+    public void setEditableField(int x, int y) {
+        board.get(x).get(y).setFieldValue(0);
+    }
+
     public SudokuRow getRow(int y) {
         List<SudokuField> values = Arrays.asList(new SudokuField[9]);
         for (int i = 0; i < 9; i++) {
@@ -117,6 +121,50 @@ public class SudokuBoard implements Serializable, Cloneable {
             }
             System.out.println();
         }
+    }
+
+    public SudokuBoard convertStringToIsEditable(String text) {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (text.charAt(i * 9 + j) == '0') {
+                    setEditableField(i, j);
+                }
+            }
+        }
+        return this;
+    }
+
+    public SudokuBoard convertStringToBoard(String text) {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                set(i, j, Character.getNumericValue(text.charAt(i * 9 + j)));
+            }
+        }
+        return this;
+    }
+
+    public String convertBoardToString() {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                builder.append(String.valueOf(get(i,j)));
+            }
+        }
+        return builder.toString();
+    }
+
+    public String convertIsEditableToString() {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (get(i,j) != 0) {
+                    builder.append(String.valueOf(1));
+                } else {
+                    builder.append(String.valueOf(0));
+                }
+            }
+        }
+        return builder.toString();
     }
 
     @Override

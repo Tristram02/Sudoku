@@ -1,17 +1,17 @@
 package sudoku;
 
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Menu;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.stage.FileChooser;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
+import sudoku.exceptions.DaoException;
 
 public class GameScene {
 
@@ -24,11 +24,13 @@ public class GameScene {
     private final BacktrackingSudokuSolver solver = new BacktrackingSudokuSolver();
     private SudokuBoard board = new SudokuBoard(solver);
     private SudokuBoard copyBoard = new SudokuBoard(solver);
-    private final ResourceBundle bundle = ResourceBundle.getBundle("sudoku/Language");
+    private final ResourceBundle bundle = ResourceBundle.getBundle("Language");
     private File file;
     private SudokuBoardDaoFactory factory = new SudokuBoardDaoFactory();
     private Dao<SudokuBoard> fileDao;
+    private Dao<SudokuBoard> databaseDao;
     private FileChooser fileChooser;
+    private static final Logger logger = Logger.getLogger(GameScene.class.getName());
 
     public void setLevelValue(int levelValue) {
         this.levelValue = levelValue;
@@ -88,14 +90,41 @@ public class GameScene {
     public void onFileSave(ActionEvent actionEvent) {
         fileChooser = new FileChooser();
 
-        if(correctInput()) {
+        if (correctInput()) {
             saveBoard();
             try {
                 file = fileChooser.showSaveDialog(SceneChange.getScene());
                 fileDao = factory.getFileDao(file.getName());
                 fileDao.write(board);
-            } catch (NullPointerException e) {
+                logger.info("Game was saved in file");
+            } catch (NullPointerException | DaoException e) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setContentText(bundle.getString("_error"));
+                alert.showAndWait();
+                logger.warning("Game was not save in file");
+            }
+        } else {
+            logger.warning(bundle.getString("_badValue"));
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText(bundle.getString("_error"));
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    public void onDatabaseSave(ActionEvent actionEvent) {
+        fileChooser = new FileChooser();
+
+        if (correctInput()) {
+            saveBoard();
+            try {
+                file = fileChooser.showSaveDialog(SceneChange.getScene());
+                databaseDao = factory.getDatabaseDao(file.getName());
+                databaseDao.write(board);
+                logger.info("Saved board to database");
+            } catch (NullPointerException | DaoException e) {
+                logger.warning("Can not save board to database");
+                Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setContentText(bundle.getString("_error"));
                 alert.showAndWait();
             }
@@ -108,7 +137,7 @@ public class GameScene {
 
     @FXML
     public void onReturnClick(ActionEvent actionEvent) throws IOException {
-        SceneChange.buildScene("SudokuMenuScene.fxml", bundle);
+        SceneChange.buildScene("/SudokuMenuScene.fxml", bundle);
         MenuControls.setOpened(true);
         MenuControls.setOpenedBoard(board);
         if (fromFile) {
@@ -121,23 +150,28 @@ public class GameScene {
     }
 
     @FXML
-    public void onConfrimClick(ActionEvent actionEvent) {
+    public void onConfrimClick(ActionEvent actionEvent) throws IOException {
 
-        if(!correctInput()) {
+        if (!correctInput()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setContentText(bundle.getString("_error"));
             alert.showAndWait();
+            logger.warning("Invalid input in board");
         } else {
             saveBoard();
             if (board.checkBoard()) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setContentText(bundle.getString("_winner"));
                 alert.showAndWait();
+                logger.info("Win");
+                SceneChange.buildScene("/SudokuMenuScene.fxml", bundle);
+                MenuControls.setOpened(false);
             } else {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setContentText(bundle.getString("_defeat"));
                 alert.showAndWait();
                 secondChance();
+                logger.info("Lost");
             }
         }
     }
@@ -146,7 +180,7 @@ public class GameScene {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 String field = ((TextField) sudokuGrid.getChildren().get(i * 9 + j)).getText();
-                if ((!field.matches("[0-9]")) || field.isEmpty()) {
+                if (!field.matches("[0-9]") || field.isEmpty()) {
                     return false;
                 }
             }
