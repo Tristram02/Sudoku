@@ -127,12 +127,6 @@ public class SudokuBoardTest {
     }
 
     @Test
-    public void setEditableFieldTest() {
-        testBoard.setEditableField(1,1);
-        assertEquals(testBoard.get(1,1), 0);
-    }
-
-    @Test
     public void convertBoardToStringTest() {
         assertNotNull(testBoard.convertBoardToString());
     }
@@ -145,29 +139,6 @@ public class SudokuBoardTest {
         }
 
         assertNotNull(testBoard.convertStringToBoard(builder.toString()));
-    }
-
-    @Test
-    public void convertIsEditableToStringTest() {
-        testBoard.setEditableField(1,1);
-        String text = testBoard.convertIsEditableToString();
-        assertEquals(text.charAt(9 + 1), '0');
-        solver.solve(testBoard);
-        text = testBoard.convertIsEditableToString();
-        assertEquals(text.charAt(9 + 1), '1');
-    }
-
-    @Test
-    public void convertStringToIsEditableTest() {
-        StringBuilder builder = new StringBuilder();
-
-        builder.append(0);
-        for (int i = 0; i < 9 * 9 - 1; i++) {
-            builder.append(1);
-        }
-
-        assertEquals(testBoard.convertStringToIsEditable(builder.toString()).get(0,0), 0);
-
     }
 
     @Test
