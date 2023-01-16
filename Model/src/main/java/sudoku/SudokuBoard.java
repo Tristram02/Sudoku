@@ -66,8 +66,12 @@ public class SudokuBoard implements Serializable, Cloneable {
         return true;
     }
     
-    public int get(int x, int y) {
-        return board.get(x).get(y).getFieldValue();
+    public int getFieldValue(int x, int y) {
+        return board.get(x).get(y).getValue();
+    }
+
+    public SudokuField getField(int x, int y) {
+        return board.get(x).get(y);
     }
 
     public SudokuRow getRow(int y) {
@@ -102,8 +106,8 @@ public class SudokuBoard implements Serializable, Cloneable {
         return new SudokuBox(values);
     }
 
-    public void set(int x, int y, int value) {
-        board.get(x).get(y).setFieldValue(value);
+    public void setField(int x, int y, int value) {
+        board.get(x).get(y).setValue(value);
     }
 
     public void solveGame() {
@@ -113,7 +117,7 @@ public class SudokuBoard implements Serializable, Cloneable {
     public void printBoard() {
         for (int i = 0;i < 9;i++) {
             for (int j = 0; j < 9; j++) {
-                System.out.print(board.get(i).get(j).getFieldValue());
+                System.out.print(board.get(i).get(j).getValue());
             }
             System.out.println();
         }
@@ -122,7 +126,7 @@ public class SudokuBoard implements Serializable, Cloneable {
     public SudokuBoard convertStringToBoard(String text) {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                set(i, j, Character.getNumericValue(text.charAt(i * 9 + j)));
+                setField(i, j, Character.getNumericValue(text.charAt(i * 9 + j)));
             }
         }
         return this;
@@ -132,7 +136,7 @@ public class SudokuBoard implements Serializable, Cloneable {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                builder.append(String.valueOf(get(i,j)));
+                builder.append(String.valueOf(getFieldValue(i,j)));
             }
         }
         return builder.toString();
@@ -159,7 +163,7 @@ public class SudokuBoard implements Serializable, Cloneable {
         SudokuBoard board1 = new SudokuBoard(this.sudokuSolver);
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                board1.set(i, j, get(i, j));
+                board1.setField(i, j, getFieldValue(i, j));
             }
         }
         return board1;

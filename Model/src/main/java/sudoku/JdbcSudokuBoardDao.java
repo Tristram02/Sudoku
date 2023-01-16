@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Logger;
-
 import sudoku.exceptions.DatabaseException;
 
 public class JdbcSudokuBoardDao implements  Dao<SudokuBoard> {

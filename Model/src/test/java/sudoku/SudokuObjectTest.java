@@ -54,11 +54,11 @@ public class SudokuObjectTest {
         {
             field.set(i, new SudokuField());
             field_2.set(i, new SudokuField());
-            field.get(i).setFieldValue(i+1);
-            field_2.get(i).setFieldValue(i+1);
+            field.get(i).setValue(i+1);
+            field_2.get(i).setValue(i+1);
         }
-        field_2.get(4).setFieldValue(8);
-        field_2.get(3).setFieldValue(0);
+        field_2.get(4).setValue(8);
+        field_2.get(3).setValue(0);
         object.setValuesOfObject(field);
         object_2.setValuesOfObject(field_2);
     }
@@ -80,7 +80,7 @@ public class SudokuObjectTest {
         String expectedOutput = "";
 
         for (int i = 0; i < 9; i++) {
-                expectedOutput += field.get(i).getFieldValue();
+                expectedOutput += field.get(i).getValue();
         }
         object.printValuesOfObject();
         assertEquals(expectedOutput, outContent.toString());

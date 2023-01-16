@@ -28,16 +28,16 @@ public class BacktrackingSudokuSolver implements SudokuSolver, Serializable {
         Random rand = new Random();
         for (int r = 0; r < 9; r++) {
             for (int c = 0; c < 9; c++) {
-                if (board.getBoard().get(r).get(c).getFieldValue() == 0) {
+                if (board.getBoard().get(r).get(c).getValue() == 0) {
                     for (int i = 1; i < 15; i++) {
                         int num = rand.nextInt(10 - 1) + 1;
                         if (correctNumber(r,c,num, board)) {
-                            board.getBoard().get(r).get(c).setFieldValue(num);
+                            board.getBoard().get(r).get(c).setValue(num);
 
                             if (solve(board)) {
                                 return true;
                             } else {
-                                board.getBoard().get(r).get(c).setFieldValue(0);
+                                board.getBoard().get(r).get(c).setValue(0);
                             }
                         }
                     }
@@ -50,7 +50,7 @@ public class BacktrackingSudokuSolver implements SudokuSolver, Serializable {
 
     public boolean correctRow(int row, int col, int num, SudokuBoard board) {
         for (int i = 0; i < 9; i++) {
-            if (board.getBoard().get(i).get(col).getFieldValue() == num) {
+            if (board.getBoard().get(i).get(col).getValue() == num) {
                 return false;
             }
         }
@@ -59,7 +59,7 @@ public class BacktrackingSudokuSolver implements SudokuSolver, Serializable {
 
     public boolean correctColumn(int row, int col, int num, SudokuBoard board) {
         for (int i = 0; i < 9; i++) {
-            if (board.getBoard().get(row).get(i).getFieldValue() == num) {
+            if (board.getBoard().get(row).get(i).getValue() == num) {
                 return false;
             }
         }
@@ -72,7 +72,7 @@ public class BacktrackingSudokuSolver implements SudokuSolver, Serializable {
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (board.getBoard().get(firstRow + i).get(firstCol + j).getFieldValue() == num) {
+                if (board.getBoard().get(firstRow + i).get(firstCol + j).getValue() == num) {
                     return false;
                 }
             }

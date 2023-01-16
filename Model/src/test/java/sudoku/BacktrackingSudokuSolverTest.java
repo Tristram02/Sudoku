@@ -39,27 +39,27 @@ public class BacktrackingSudokuSolverTest {
 
     @Test
     public void testCorrectRow() {
-        testBoard.set(0,0,1);
+        testBoard.setField(0,0,1);
         assertFalse(b.correctNumber(0,5,1,testBoard));
         assertTrue(b.correctNumber(0,5,5,testBoard));
     }
     @Test
     public void testCorrectColumn() {
-        testBoard.set(0,0,1);
+        testBoard.setField(0,0,1);
         assertFalse(b.correctNumber(5,0,1,testBoard));
         assertTrue(b.correctNumber(5,0,5,testBoard));
     }
 
     @Test
     public void testCorrectBox() {
-        testBoard.set(0,0,1);
+        testBoard.setField(0,0,1);
         assertFalse(b.correctNumber(1,1,1,testBoard));
         assertTrue(b.correctNumber(1,1,5,testBoard));
     }
 
     @Test
     public void testCorrectNumber() {
-        testBoard.set(2,7,4);
+        testBoard.setField(2,7,4);
         assertFalse(b.correctNumber(2, 3, 4, testBoard));
         assertFalse(b.correctNumber(5, 7, 4, testBoard));
         assertFalse(b.correctNumber(1, 8, 4, testBoard));

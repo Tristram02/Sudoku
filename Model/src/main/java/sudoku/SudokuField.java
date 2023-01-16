@@ -32,11 +32,11 @@ public class SudokuField implements Serializable, Cloneable, Comparable<SudokuFi
     private int value;
     private final transient ResourceBundle bundle = ResourceBundle.getBundle("Language");
 
-    public int getFieldValue() {
+    public int getValue() {
         return value;
     }
 
-    public void setFieldValue(int newValue) {
+    public void setValue(int newValue) {
 
         if (newValue < 0 || newValue > 9) {
             throw new WrongValueException(bundle.getString("_badValue"));
@@ -64,9 +64,9 @@ public class SudokuField implements Serializable, Cloneable, Comparable<SudokuFi
         if (obj == null) {
             throw new NullPointerException("Wrong object!");
         }
-        if (this.getFieldValue() == obj.getFieldValue()) {
+        if (this.getValue() == obj.getValue()) {
             return 0;
-        } else if (this.getFieldValue() > obj.getFieldValue()) {
+        } else if (this.getValue() > obj.getValue()) {
             return 1;
         } else {
             return -1;

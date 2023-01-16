@@ -1,3 +1,9 @@
 nbproject
 target
 .idea
+board
+base.db
+Model/database
+Model/file
+Model/testbase.db
+Log.txt

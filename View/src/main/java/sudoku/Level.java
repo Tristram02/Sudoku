@@ -34,7 +34,7 @@ public class Level {
         }
 
         for (Pair<Integer, Integer> x : hiddenFields) {
-            board.set(x.getKey(), x.getValue(), 0);
+            board.setField(x.getKey(), x.getValue(), 0);
         }
         return board;
     }

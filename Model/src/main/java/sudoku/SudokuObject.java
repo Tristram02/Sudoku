@@ -50,14 +50,14 @@ public class SudokuObject implements Cloneable, Serializable {
 
     public void printValuesOfObject() {
         for (int i = 0; i < 9; i++) {
-            System.out.print(field.get(i).getFieldValue());
+            System.out.print(field.get(i).getValue());
         }
     }
 
     public boolean verify() {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                if (i != j && field.get(i).getFieldValue() == field.get(j).getFieldValue() || field.get(j).getFieldValue() == 0) {
+                if (i != j && field.get(i).getValue() == field.get(j).getValue() || field.get(j).getValue() == 0) {
                     return false;
                 }
 

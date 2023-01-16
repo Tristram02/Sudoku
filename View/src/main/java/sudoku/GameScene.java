@@ -4,13 +4,19 @@ package sudoku;
 import java.io.File;
 import java.io.IOException;
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
 import java.util.logging.Logger;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.adapter.JavaBeanIntegerProperty;
+import javafx.beans.property.adapter.JavaBeanIntegerPropertyBuilder;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
+import javafx.util.converter.NumberStringConverter;
 import sudoku.exceptions.DaoException;
 
 public class GameScene {
@@ -44,16 +50,9 @@ public class GameScene {
         fromFile = value;
     }
 
-    public void setSudokuGrid() {
-        this.sudokuGrid = (GridPane) SceneChange.getScene().getScene().lookup("#sudokuGrid");
-    }
 
-
-    //Cos jest nie tak z tym plikiem, zaczytywaniem, stanem borda
-    //Sprobuj znowu zaczytac innego borda, zobacz czy dobrze zapamieta
-    //I jakie rzeczy bedzie wypluwac do fieldow, bo na ten momment ma jedno a robi drugi i chuj wie czemu
     @FXML
-    public void initialize() throws CloneNotSupportedException {
+    public void initialize() throws CloneNotSupportedException, NoSuchMethodException {
         setLevelValue(MenuControls.getCurrentLevel());
         if (fromFile) {
             this.board = MenuControls.getFileBoard();
@@ -70,17 +69,35 @@ public class GameScene {
         }
 
         fillGrid();
+
+
     }
 
 
-    private void fillGrid() {
+    private void fillGrid() throws NoSuchMethodException {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 TextField textField = new TextField();
-                textField.setText(String.valueOf(board.get(i, j)));
-                if (board.get(i, j) != 0) {
+
+                JavaBeanIntegerProperty value = JavaBeanIntegerPropertyBuilder.create().bean(board.getField(i,j)).name("value").build();
+                Bindings.bindBidirectional(textField.textProperty(),value, new NumberStringConverter());
+
+                UnaryOperator<TextFormatter.Change> filter = change -> {
+                    String text = change.getControlNewText();
+                    if (text.matches("[1-9]*") && change.getControlNewText().length() <= 1) {
+                        return change;
+                    }
+                    return null;
+                };
+                textField.setTextFormatter(new TextFormatter<>(filter));
+
+                if (board.getFieldValue(i, j) == 0) {
+                    textField.setText("");
+                } else {
+                    textField.setText(String.valueOf(board.getFieldValue(i, j)));
                     textField.setDisable(true);
                 }
+
                 sudokuGrid.add(textField, j, i);
             }
         }
@@ -91,7 +108,6 @@ public class GameScene {
         fileChooser = new FileChooser();
 
         if (correctInput()) {
-            saveBoard();
             try {
                 file = fileChooser.showSaveDialog(SceneChange.getScene());
                 fileDao = factory.getFileDao(file.getName());
@@ -116,7 +132,6 @@ public class GameScene {
         fileChooser = new FileChooser();
 
         if (correctInput()) {
-            saveBoard();
             try {
                 file = fileChooser.showSaveDialog(SceneChange.getScene());
                 databaseDao = factory.getDatabaseDao(file.getName());
@@ -150,7 +165,7 @@ public class GameScene {
     }
 
     @FXML
-    public void onConfrimClick(ActionEvent actionEvent) throws IOException {
+    public void onConfrimClick(ActionEvent actionEvent) throws IOException, NoSuchMethodException {
 
         if (!correctInput()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -158,7 +173,6 @@ public class GameScene {
             alert.showAndWait();
             logger.warning("Invalid input in board");
         } else {
-            saveBoard();
             if (board.checkBoard()) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setContentText(bundle.getString("_winner"));
@@ -180,7 +194,7 @@ public class GameScene {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 String field = ((TextField) sudokuGrid.getChildren().get(i * 9 + j)).getText();
-                if (!field.matches("[0-9]") || field.isEmpty()) {
+                if (!field.matches("[0-9]|^$")) {
                     return false;
                 }
             }
@@ -188,29 +202,17 @@ public class GameScene {
         return true;
     }
 
-    public void saveBoard() {
+    public void secondChance() throws NoSuchMethodException {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                String field = ((TextField) sudokuGrid.getChildren().get(i * 9 + j)).getText();
-                if (!field.equals("")) {
-                    board.set(i, j, Integer.parseInt(field));
-                } else {
-                    board.set(i, j, 0);
-                }
-            }
-        }
-    }
-
-    public void secondChance() {
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                if (copyBoard.get(i, j) != board.get(i, j)) {
-                    board.set(i, j, 0);
+                if (copyBoard.getFieldValue(i, j) != board.getFieldValue(i, j)) {
+                    board.setField(i, j, 0);
                 }
             }
         }
         sudokuGrid.getChildren().clear();
         fillGrid();
     }
+
 
 }

@@ -61,20 +61,23 @@ public class SudokuBoardTest {
     void prepareTestBoard_2() {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                testBoard_2.set(i,j,1);
+                testBoard_2.setField(i,j,1);
             }
         }
     }
 
 
 
-
+    @Test
+    public void getFieldTest() {
+        assertEquals(testBoard_2.getField(0,0).getValue(), testBoard_2.getFieldValue(0,0));
+    }
 
     @Test
     public void testSet() {
         int x = 2, y = 4, value = 5;
-        testBoard.set(x, y, value);
-        assertTrue(testBoard.get(2,4)==5);
+        testBoard.setField(x, y, value);
+        assertTrue(testBoard.getFieldValue(2,4)==5);
     }
 
     @Test
@@ -86,7 +89,7 @@ public class SudokuBoardTest {
 
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                expectedOutput += testBoard_2.get(i,j);
+                expectedOutput += testBoard_2.getFieldValue(i,j);
             }
             expectedOutput += "\r\n";
         }
@@ -110,15 +113,15 @@ public class SudokuBoardTest {
         testBoard_row.solveGame();
         testBoard_box.solveGame();
         testBoard_col.solveGame();
-        testBoard_row.set(0,1,4);
-        testBoard_row.set(0,2,4);
-        testBoard_col.set(1,0,4);
-        testBoard_col.set(2,0,4);
+        testBoard_row.setField(0,1,4);
+        testBoard_row.setField(0,2,4);
+        testBoard_col.setField(1,0,4);
+        testBoard_col.setField(2,0,4);
         for(int i=0;i<9;i++)
         {
-            int x = testBoard_box.get(2,i);
-            testBoard_box.set(2,i, testBoard_box.get(3,i) );
-            testBoard_box.set(3,i,x);
+            int x = testBoard_box.getFieldValue(2,i);
+            testBoard_box.setField(2,i, testBoard_box.getFieldValue(3,i) );
+            testBoard_box.setField(3,i,x);
         }
         assertTrue(testBoard_good.checkBoard());
         assertFalse(testBoard_row.checkBoard());

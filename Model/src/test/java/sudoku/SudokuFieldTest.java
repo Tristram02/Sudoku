@@ -23,10 +23,10 @@ class SudokuFieldTest {
     @Test
     public void setFieldValueExceptionTest() {
         Throwable exception = assertThrows(WrongValueException.class, () -> {
-            field.setFieldValue(10);
+            field.setValue(10);
         });
         Throwable exception_2 = assertThrows(WrongValueException.class, () -> {
-            field.setFieldValue(-1);
+            field.setValue(-1);
         });
         assertEquals(bundle.getString("_badValue"), exception.getMessage());
         assertEquals(bundle.getString("_badValue"), exception_2.getMessage());
@@ -50,12 +50,12 @@ class SudokuFieldTest {
 
     @Test
     public void compareToTest() {
-        field.setFieldValue(5);
-        field_2.setFieldValue(7);
+        field.setValue(5);
+        field_2.setValue(7);
         assertTrue(field.compareTo(field_2) < 0);
-        field_2.setFieldValue(2);
+        field_2.setValue(2);
         assertTrue(field.compareTo(field_2) > 0);
-        field_2.setFieldValue(5);
+        field_2.setValue(5);
         assertEquals(field.compareTo(field_2), 0);
     }
 
@@ -70,7 +70,7 @@ class SudokuFieldTest {
 
     @Test
     public void cloneTest() throws CloneNotSupportedException {
-        field.setFieldValue(5);
+        field.setValue(5);
         field_2 = (SudokuField) field.clone();
         assertTrue(field.equals(field_2) && field_2.equals(field));
     }
