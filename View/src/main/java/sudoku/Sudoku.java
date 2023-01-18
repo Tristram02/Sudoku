@@ -27,7 +27,7 @@ public class Sudoku extends Application {
     }
 
     public static void main(String[] args) {
-        FileHandler fh;
+        FileHandler fh = null;
         try {
             fh = new FileHandler("Log.txt");
             Logger.getLogger("").addHandler(fh);
@@ -35,6 +35,10 @@ public class Sudoku extends Application {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setContentText("Error");
             alert.showAndWait();
+        } finally {
+            if (fh != null) {
+                fh.close();
+            }
         }
 
         logger.info("App started");
