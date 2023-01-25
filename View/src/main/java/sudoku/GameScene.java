@@ -134,6 +134,10 @@ public class GameScene {
         if (correctInput()) {
             try {
                 file = fileChooser.showSaveDialog(SceneChange.getScene());
+                String filePath = file.getAbsolutePath();
+                if (!filePath.endsWith(".db")) {
+                   file = new File(filePath + ".db");
+                }
                 databaseDao = factory.getDatabaseDao(file.getName());
                 databaseDao.write(board);
                 logger.info("Saved board to database");

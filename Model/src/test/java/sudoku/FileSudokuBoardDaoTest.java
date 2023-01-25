@@ -6,6 +6,8 @@ import sudoku.exceptions.DaoException;
 import sudoku.exceptions.FileException;
 
 
+import java.sql.SQLException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class FileSudokuBoardDaoTest {
@@ -23,7 +25,7 @@ class FileSudokuBoardDaoTest {
     }
 
     @Test
-    public void readAndWriteTest() throws DaoException {
+    public void readAndWriteTest() throws DaoException, SQLException {
         file = factory.getFileDao("file");
         file.write(board);
         board_2 = file.read();

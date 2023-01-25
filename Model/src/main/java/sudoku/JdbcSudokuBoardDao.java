@@ -13,14 +13,18 @@ import sudoku.exceptions.DatabaseException;
 public class JdbcSudokuBoardDao implements  Dao<SudokuBoard> {
 
     public static final String DataBaseName = "Board";
-    private static final Logger logger = Logger.getLogger(JdbcSudokuBoardDao.class.getName());
+    public static final String FieldsTableName = "Fields";
     private String file;
+    private int id = 0;
+
+    private String insertData = "insert into " + DataBaseName + "(board_id, tableName) values (?,?)";
+    private String insertFieldsData = "insert into " + FieldsTableName + "(x,y,field,board_id) values (?,?,?,?)";
 
     JdbcSudokuBoardDao(String file) {
         this.file = file;
     }
 
-    private Connection connect(String jdbcUrl) throws DatabaseException {
+    public Connection connect(String jdbcUrl) throws DatabaseException {
         Connection connection;
 
         try {
@@ -36,24 +40,24 @@ public class JdbcSudokuBoardDao implements  Dao<SudokuBoard> {
         BacktrackingSudokuSolver solver = new BacktrackingSudokuSolver();
         SudokuBoard board = new SudokuBoard(solver);
         String jdbcUrl = "jdbc:sqlite:" + this.file;
-        Connection connection = connect(jdbcUrl);
-        String receivedData;
+        Connection connection = this.connect(jdbcUrl);
+        String receivedData = "";
         ResultSet resultSet;
-        String selectData = "select tableName, fields from " + DataBaseName + " where tableName=?";
+        String selectData = "select field from " + DataBaseName + " inner join " + FieldsTableName + " on " + DataBaseName + ".board_id = " + FieldsTableName + ".board_id where tableName=?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(selectData)) {
-            logger.info(preparedStatement.toString());
             preparedStatement.setString(1, file);
-            logger.info(preparedStatement.toString());
             resultSet = preparedStatement.executeQuery();
-            receivedData = resultSet.getString(2);
-            logger.info(receivedData);
-            board.convertStringToBoard(receivedData);
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                throw new DatabaseException(e);
+            while (resultSet.next()) {
+                receivedData += resultSet.getString(1);
             }
+            board.convertStringToBoard(receivedData);
+        } catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
+
+        try {
+            connection.close();
         } catch (SQLException e) {
             throw new DatabaseException(e);
         }
@@ -68,24 +72,51 @@ public class JdbcSudokuBoardDao implements  Dao<SudokuBoard> {
         String jdbcUrl = "jdbc:sqlite:./" + file;
         Connection connection = connect(jdbcUrl);
 
-        String createTable = "create table " + DataBaseName + "(tableName varchar(20) primary key not null," + "fields varchar(81))";
-
-        String insertData = "insert into Board(tableName, fields) values (?,?)";
+        String createTable = "create table " + DataBaseName + "(board_id int PRIMARY KEY, tableName varchar(20) not null)";
+        String createFieldsTable = "create table " + FieldsTableName + "(x int not null, y int not null, field int not null, board_id int not null ,foreign key (board_id) references " + DataBaseName + "(board_id))";
 
         try (Statement statement = connection.createStatement()) {
+            connection.setAutoCommit(false);
             statement.execute(createTable);
-            try (PreparedStatement preparedStatement = connection.prepareStatement(insertData)) {
-                preparedStatement.setString(1, file);
-                preparedStatement.setString(2, board.convertBoardToString());
-                preparedStatement.executeUpdate();
-            } catch (SQLException e) {
-                throw new DatabaseException(e);
-            }
+            statement.execute(createFieldsTable);
+            connection.commit();
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                throw new DatabaseException(ex);
+            }
+            throw new DatabaseException(e);
+        }
+
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertData);
+            PreparedStatement preparedStatement1 = connection.prepareStatement(insertFieldsData)) {
+            connection.setAutoCommit(false);
+            preparedStatement.setString(1, Integer.toString(id));
+            preparedStatement.setString(2, file);
+            preparedStatement.executeUpdate();
+
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                    preparedStatement1.setString(1,Integer.toString(i));
+                    preparedStatement1.setString(2,Integer.toString(j));
+                    preparedStatement1.setString(3,Integer.toString(board.getFieldValue(i,j)));
+                    preparedStatement1.setString(4,Integer.toString(this.id));
+                    preparedStatement1.executeUpdate();
+                }
+            }
+            this.id++;
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                throw new DatabaseException(ex);
+            }
             throw new DatabaseException(e);
         }
 
     }
-
 
 }
